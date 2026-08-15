@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Feluda — Paper-canvas + charcoal-intelligence-panel aesthetic.
+   Default: paper (#F5F0E2). Opt-in dark mode: charcoal workspace.
+   Insight: dark teal success, restrained red risk, purple accent.
+   ============================================================ */
+
+@layer base {
+  /* === Default (paper) === */
+  :root {
+    /* Paper canvas — warm ivory */
+    --bg-base: 245 240 226;            /* #F5F0E2 paper */
+    --bg-surface: 232 224 207;         /* #E8E0CF paper-deep */
+    --bg-elevated: 220 211 192;        /* #DCD3C0 paper-deeper */
+
+    /* Charcoal intelligence panels */
+    --charcoal-deep: 18 17 14;         /* #12110E */
+    --charcoal-mid: 32 30 26;          /* #201E1A */
+    --charcoal-raised: 46 43 38;       /* #2E2B26 */
+    --ink-on-charcoal: 232 226 211;    /* #E8E2D3 */
+
+    /* Ink (text on paper) */
+    --ink-primary: 18 17 14;           /* deep charcoal */
+    --ink-secondary: 78 70 58;         /* warm gray */
+    --ink-tertiary: 128 117 102;       /* warm dim */
+
+    /* Borders — sharp, low-opacity charcoal */
+    --border-subtle: 18 17 14;
+    --border: 18 17 14;
+
+    /* Accent — deep purple (CTA / link highlight) */
+    --accent: 96 70 145;               /* #604691 dark purple */
+    --accent-soft: 96 70 145;
+    --accent-glow: 96 70 145;
+
+    /* Status (semantic) */
+    --status-safe: 26 128 116;         /* dark teal — verified */
+    --status-attention: 184 134 24;    /* muted amber */
+    --status-critical: 180 50 50;      /* restrained red */
+
+    /* Charcoal intelligence panels (mapped to the 3-card cycle) */
+    --panel-mint: 18 17 14;            /* charcoal-deep */
+    --panel-sea: 32 30 26;             /* charcoal-mid */
+    --panel-peri: 46 43 38;            /* charcoal-raised */
+    --code-bg: 18 17 14;               /* deep charcoal */
+    --cream: 232 224 196;
+    --pixel-yellow: 200 150 30;
+
+    /* Ink on intelligence panels */
+    --ink-on-panel: 232 226 211;
+    --ink-on-code: 232 226 211;
+    --ink-on-sea: 232 226 211;
+
+    --on-accent: 232 226 211;          /* light text on dark purple */
+
+    --hairline-opacity: 0.12;
+    --hairline-bright-opacity: 0.22;
+
+    color-scheme: light;
+  }
+
+  /* === Dark: charcoal workspace === */
+  :root.dark {
+    --bg-base: 12 12 12;               /* near-black canvas */
+    --bg-surface: 20 20 20;            /* raised */
+    --bg-elevated: 32 32 32;           /* third step */
+
+    --charcoal-deep: 0 0 0;
+    --charcoal-mid: 20 20 20;
+    --charcoal-raised: 36 36 36;
+    --ink-on-charcoal: 232 226 211;
+
+    --ink-primary: 232 226 211;        /* paper text on charcoal */
+    --ink-secondary: 170 162 148;
+    --ink-tertiary: 120 113 102;
+
+    --border-subtle: 232 226 211;
+    --border: 232 226 211;
+
+    --accent: 173 156 220;             /* #AD9CDC light purple */
+    --accent-soft: 173 156 220;
+    --accent-glow: 173 156 220;
+
+    --status-safe: 38 162 148;         /* brighter dark teal */
+    --status-attention: 220 170 50;
+    --status-critical: 220 80 80;
+
+    --panel-mint: 0 0 0;
+    --panel-sea: 20 20 20;
+    --panel-peri: 36 36 36;
+    --code-bg: 0 0 0;
+    --cream: 232 224 196;
+    --pixel-yellow: 220 170 50;
+
+    --ink-on-panel: 232 226 211;
+    --ink-on-code: 232 226 211;
+    --ink-on-sea: 232 226 211;
+
+    --on-accent: 12 12 12;             /* dark text on light purple */
+
+    --hairline-opacity: 0.14;
+    --hairline-bright-opacity: 0.28;
+
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: rgb(var(--bg-base));
+    color: rgb(var(--ink-primary));
+    font-feature-settings: "ss01", "cv11";
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.35);
+    color: rgb(var(--ink-primary));
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--bg-base));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--border) / 0.25);
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--border) / 0.5);
+  }
+}
+
+@layer components {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-balance-lg {
+    text-wrap: pretty;
+  }
+
+  /* Hairline rules — single 1px stroke at low opacity. */
+  .hairline-b {
+    border-bottom: 1px solid rgb(var(--border) / var(--hairline-opacity));
+  }
+  .hairline-t {
+    border-top: 1px solid rgb(var(--border) / var(--hairline-opacity));
+  }
+  .hairline {
+    border: 1px solid rgb(var(--border) / var(--hairline-opacity));
+  }
+  .hairline-bright {
+    border: 1px solid rgb(var(--border) / var(--hairline-bright-opacity));
+  }
+
+  /* Mono caption label — ALL CAPS, letter-spaced. */
+  .label-mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Subtle dotted SVG pattern used as decorative texture on panels. */
+  .dot-grid {
+    background-image: radial-gradient(
+      circle at center,
+      rgb(var(--border) / 0.18) 1px,
+      transparent 1.5px
+    );
+    background-size: 22px 22px;
+  }
+}
+
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base;
+  }
+
+  .focus-ring-inset {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
