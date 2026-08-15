@@ -53,8 +53,8 @@ export function Hero() {
       <HeroBg
         darkSrc="/Dark BG.png"
         lightSrc="/Light BG.png"
-        baseOpacity={0.16}
-        spotlightOpacity={0.7}
+        baseOpacity={0.24}
+        spotlightOpacity={0.85}
         spotlightSize={300}
         className="absolute inset-0 h-full w-full pointer-events-auto"
       />
@@ -70,9 +70,12 @@ export function Hero() {
 
       {/* Radial vignette behind the centered text — fades the figure
           under the headline/supporting copy so type reads cleanly. */}
+      {/* Radial vignette behind the centered text — fades the figure
+          under the headline/supporting copy so type reads cleanly.
+          Lighter in dark mode so the figure stays visible. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_center,rgb(var(--bg-base)_/_0.85),rgb(var(--bg-base)_/_0.0)_70%)] pointer-events-none"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_center,rgb(var(--bg-base)_/_0.85),rgb(var(--bg-base)_/_0.0)_70%)] dark:bg-[radial-gradient(ellipse_55%_45%_at_center,rgb(var(--bg-base)_/_0.45),rgb(var(--bg-base)_/_0.0)_70%)] pointer-events-none"
       />
 
       {/* Top + bottom edge gradients — feather the figure into the

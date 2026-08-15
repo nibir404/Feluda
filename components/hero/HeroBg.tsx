@@ -50,17 +50,24 @@ export function HeroBg({
   const reduced = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [src, setSrc] = useState(darkSrc);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
-  // Theme-aware source.
+  // Theme-aware source + opacity calibration.
   //   Paper mode (html.light)  → Dark BG.png  (white line on teal-567
   //                              evidence panel, pinned on paper wall).
   //   Dark mode  (html.dark)   → Light BG.png (darker line art, reads
   //                              on the charcoal workspace).
+  //
+  // The "Light BG.png" asset is dark line art on a teal panel — on the
+  // near-black dark canvas it disappears at the paper-mode opacities.
+  // We self-lift both opacities in dark mode so the figure actually
+  // reads; the props remain the authoritative values for light mode.
   useEffect(() => {
     if (typeof document === "undefined") return;
     const apply = () => {
       const isLight = document.documentElement.classList.contains("light");
       setSrc(isLight ? darkSrc : lightSrc);
+      setIsDarkTheme(!isLight);
     };
     apply();
     const obs = new MutationObserver(apply);
@@ -70,6 +77,16 @@ export function HeroBg({
     });
     return () => obs.disconnect();
   }, [darkSrc, lightSrc]);
+
+  // Opacity lifts applied only in dark mode.
+  //   base:       2.4× — figure needs much higher base to read on near-black.
+  //   spotlight:  1.2× — already at high intensity; smaller lift, clamped to 1.
+  const effectiveBase = isDarkTheme
+    ? Math.min(1, baseOpacity * 2.4)
+    : baseOpacity;
+  const effectiveSpotlight = isDarkTheme
+    ? Math.min(1, spotlightOpacity * 1.2)
+    : spotlightOpacity;
 
   // Track cursor → update CSS variables on the wrap. Light RAF smoothing
   // stops the spotlight from jittering on quick moves.
@@ -144,7 +161,7 @@ export function HeroBg({
         loading="eager"
         decoding="async"
         initial={{ opacity: 0 }}
-        animate={{ opacity: baseOpacity }}
+        animate={{ opacity: effectiveBase }}
         transition={{ duration: 1.6, ease: EASE }}
         className="absolute inset-0 m-auto h-full w-auto max-w-none select-none pointer-events-none"
       />
@@ -156,7 +173,7 @@ export function HeroBg({
         draggable={false}
         decoding="async"
         initial={{ opacity: 0 }}
-        animate={{ opacity: spotlightOpacity }}
+        animate={{ opacity: effectiveSpotlight }}
         transition={{ duration: 1.6, ease: EASE }}
         className="absolute inset-0 m-auto h-full w-auto max-w-none select-none pointer-events-none"
         style={{
