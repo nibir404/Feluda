@@ -1,71 +1,9 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
-import { Github } from "lucide-react";
-import { Container } from "@/components/primitives/Container";
-import { authPageContent, routes } from "@/lib/content";
-
-export const metadata = {
-  title: "Start with Feluda",
-  description: "Connect a repository and start building context in minutes.",
-};
-
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 export default function SignUpPage() {
-  const { signup } = authPageContent;
-  return (
-    <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-24">
-      <Container size="narrow">
-        <div className="max-w-md mx-auto text-center">
-          <p className="font-mono text-[11px] tracking-[0.18em] text-accent uppercase mb-4">
-            {signup.eyebrow}
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink-primary leading-tight">
-            {signup.headline}
-          </h1>
-          <p className="mt-4 text-base text-ink-secondary leading-relaxed">
-            {signup.supporting}
-          </p>
-
-          <div className="mt-10 rounded-lg bg-bg-surface hairline p-6 text-left">
-            <button
-              type="button"
-              className="w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-md bg-accent text-on-accent hover:bg-accent/90 transition-colors focus-ring font-medium text-sm"
-            >
-              <Github className="w-4 h-4" strokeWidth={1.75} />
-              Continue with GitHub
-            </button>
-            <button
-              type="button"
-              className="mt-2 w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-md bg-bg-base hairline text-ink-primary hover:bg-bg-raised hover:border-border-strong transition-colors focus-ring font-medium text-sm"
-            >
-              Continue with GitLab
-            </button>
-            <button
-              type="button"
-              className="mt-2 w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-md bg-bg-base hairline text-ink-primary hover:bg-bg-raised hover:border-border-strong transition-colors focus-ring font-medium text-sm"
-            >
-              Continue with Bitbucket
-            </button>
-            <button
-              type="button"
-              className="mt-2 w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-md bg-bg-base hairline text-ink-primary hover:bg-bg-raised hover:border-border-strong transition-colors focus-ring font-medium text-sm"
-            >
-              Continue with Email
-            </button>
-            <p className="mt-5 text-xs text-ink-tertiary text-center">
-              By continuing, you agree to Feluda's Terms and Privacy.
-            </p>
-          </div>
-
-          <p className="mt-8 text-sm text-ink-secondary">
-            Already have an account?{" "}
-            <Link
-              href={routes.auth.signin}
-              className="text-accent hover:underline"
-            >
-              Sign in →
-            </Link>
-          </p>
-        </div>
-      </Container>
-    </section>
-  );
+ const [provider,setProvider] = useState("GitHub");
+ const [prepared,setPrepared] = useState(false);
+ return <section className="access-page"><div className="access-copy"><span className="eyebrow">[ START WITH FELUDA ]</span><h1>Give your codebase<br/>a fresh pair of eyes.</h1><p>Tell us a little about your team. We’ll help you connect the dots.</p><ul>{["A walkthrough of your engineering workflow","Repository and deployment guidance","A plan that fits your team"].map(t=><li key={t}><CheckCircle2 size={17}/>{t}</li>)}</ul><Link href="/#casebook" className="text-link">Explore an example first <ArrowRight size={14}/></Link></div><form className="access-form" onSubmit={e=>{e.preventDefault();const data=new FormData(e.currentTarget);const subject=encodeURIComponent(`Feluda access request — ${data.get("name")}`);const body=encodeURIComponent(`Name: ${data.get("name")}\nWork email: ${data.get("email")}\nRepository provider: ${provider}\nTeam size: ${data.get("size")}\n\nI'd like to arrange a Feluda walkthrough.`);window.location.href=`mailto:sales@feluda.io?subject=${subject}&body=${body}`;setPrepared(true);}}><h2>Start a conversation.</h2><p>This opens an email to our team. No repository access is requested here.</p><label>Your name<input name="name" autoComplete="name" required placeholder="Alex Morgan"/></label><label>Work email<input name="email" type="email" autoComplete="email" required placeholder="alex@company.com"/></label><fieldset><legend>Where does your code live?</legend><div className="provider-options">{["GitHub","GitLab","Bitbucket"].map(p=><button type="button" key={p} aria-pressed={provider===p} onClick={()=>setProvider(p)}>{p}</button>)}</div></fieldset><label>Team size<select name="size"><option>Just me</option><option>2–10 engineers</option><option>11–50 engineers</option><option>51–200 engineers</option><option>200+ engineers</option></select></label><button className="cut-button orange" type="submit">Request a walkthrough <ArrowRight size={15}/></button>{prepared&&<p role="status">Your email draft is ready in your mail app. Send it to complete your request, or email sales@feluda.io directly.</p>}</form></section>;
 }

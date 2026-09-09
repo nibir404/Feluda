@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import { Inter, JetBrains_Mono, Instrument_Serif, Anybody } from "next/font/google";
 import "./globals.css";
+import "./redesign.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+
+const display = Anybody({ subsets: ["latin"], display: "swap", variable: "--font-display" });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,7 +89,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrains.variable} ${serif.variable}`}
+      className={`${inter.variable} ${jetbrains.variable} ${serif.variable} ${display.variable}`}
       suppressHydrationWarning
     >
       <head>
