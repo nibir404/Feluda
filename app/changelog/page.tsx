@@ -1,16 +1,12 @@
-import { ComingSoon } from "@/components/primitives/ComingSoon";
+import type { Metadata } from "next";
+import Changelog from "@/components/changelog/Changelog";
 
-export const metadata = {
-  title: "Changelog",
-  description: "What's new in Feluda—features, improvements, and fixes.",
+export const metadata: Metadata = {
+  title: "Changelog — the case log",
+  description: "What's new in Feluda: agentic pentests, GitLab support, analytics export and what's coming next.",
+  alternates: { canonical: "/changelog", types: { "application/rss+xml": "/changelog/rss.xml" } },
 };
 
-export default function ChangelogPage() {
-  return (
-    <ComingSoon
-      eyebrow="RESOURCES / CHANGELOG"
-      title="Feluda changelog"
-      description="A running log of releases, new capabilities, and notable improvements to the Feluda platform."
-    />
-  );
+export default function Page() {
+  return <Changelog />;
 }

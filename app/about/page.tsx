@@ -1,41 +1,19 @@
-import { PageHero } from "@/components/primitives/PageHero";
-import { PageCta } from "@/components/sections/PageCta";
-import { Container } from "@/components/primitives/Container";
-import { companyPageContent, routes } from "@/lib/content";
+import type { Metadata } from "next";
+import { AboutHero, Principles, Security, Contact } from "@/components/about/AboutParts";
 
-export const metadata = {
-  title: "About",
-  description:
-    "Feluda is built by engineers who got tired of searching, asking, and tracing just to understand the systems they worked on.",
+export const metadata: Metadata = {
+  title: "About & Security",
+  description: "Why Feluda is named after Satyajit Ray's detective, how it handles your code and access, and how to bring it to your enterprise.",
+  alternates: { canonical: "/about" },
 };
 
-export default function AboutPage() {
-  const { about } = companyPageContent;
+export default function About() {
   return (
     <>
-      <PageHero
-        eyebrow={about.eyebrow}
-        headline={about.headline}
-        supporting={about.supporting}
-      />
-      <section className="py-16 lg:py-24">
-        <Container size="default">
-          <div className="prose prose-invert max-w-none">
-            <p className="text-lg text-ink-secondary leading-relaxed">
-              {about.body}
-            </p>
-          </div>
-        </Container>
-      </section>
-      <PageCta
-        headline="Join us."
-        subheadline="We're building the intelligence layer for engineering teams."
-        primary={{ label: "See open roles", href: routes.company.careers }}
-        secondary={{
-          label: "Talk to sales",
-          href: routes.company.contact,
-        }}
-      />
+      <AboutHero />
+      <Principles />
+      <Security />
+      <Contact />
     </>
   );
 }

@@ -1,17 +1,12 @@
-import { ComingSoon } from "@/components/primitives/ComingSoon";
+import type { Metadata } from "next";
+import QuickStart from "@/components/docs/QuickStart";
 
-export const metadata = {
-  title: "Documentation",
-  description:
-    "Documentation for the Feluda platform—integrations, configuration, and the Feluda API.",
+export const metadata: Metadata = {
+  title: "Docs — Quick start",
+  description: "Your first Feluda case in five steps: continue with Puku, connect GitHub or GitLab, pick repositories and open a pull request.",
+  alternates: { canonical: "/docs" },
 };
 
-export default function DocsPage() {
-  return (
-    <ComingSoon
-      eyebrow="RESOURCES / DOCUMENTATION"
-      title="Feluda documentation"
-      description="Reference documentation, integration guides, API reference, and configuration for Feluda. Coming soon."
-    />
-  );
+export default function Docs() {
+  return <QuickStart />;
 }
