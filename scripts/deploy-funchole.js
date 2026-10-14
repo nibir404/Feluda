@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const BEARER_TOKEN = process.env.FUNCHOLE_TOKEN || 'fh_mcp__ByW5VspAQP50G_rfINBVnt80tN9FKD3n8BtEL8eQGY';
 const MCP_URL = 'https://app.funchole.dev/mcp';
 const DEDICATED_GATEWAY_ID = '449c3345-365b-4d61-9eda-f378466fc61e'; // tem43n.funchole.dev
-const DEFAULT_GATEWAY_ID = 'cad6c072-f4a3-4d63-8a9e-3a211218d99e';   // 5zyu0p.funchole.dev
 
 class FuncholeClient {
   constructor(token) {
@@ -79,31 +79,75 @@ class FuncholeClient {
   }
 }
 
-function collectSourceFiles(rootDir) {
+function prepareDeployFiles() {
+  console.log('[FuncHole] Building static Next.js production export locally...');
+  execSync('npm run build', { stdio: 'inherit' });
+
   const files = [];
-  const ignoreDirs = new Set(['node_modules', '.next', 'out', 'dist', '.git', '.claude', '.agents']);
-  const ignoreFiles = new Set(['.DS_Store', 'tsconfig.tsbuildinfo', 'hero-concept.png']);
+  const binaryMap = {};
+  const outDir = path.join(process.cwd(), 'out');
 
   function scan(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
-      const relPath = path.relative(rootDir, fullPath);
+      const relPath = path.relative(outDir, fullPath);
 
       if (entry.isDirectory()) {
-        if (!ignoreDirs.has(entry.name)) {
-          scan(fullPath);
-        }
+        scan(fullPath);
       } else if (entry.isFile()) {
-        if (!ignoreFiles.has(entry.name) && !entry.name.endsWith('.webp') && !entry.name.endsWith('.png')) {
+        if (entry.name === 'hero-concept.png') continue;
+
+        if (entry.name.endsWith('.woff2') || entry.name.endsWith('.webp') || entry.name.endsWith('.png')) {
+          binaryMap[relPath] = fs.readFileSync(fullPath).toString('base64');
+        } else {
           const content = fs.readFileSync(fullPath, 'utf8');
-          files.push({ path: relPath, content });
+          files.push({ path: `dist/${relPath}`, content });
+          files.push({ path: `out/${relPath}`, content });
         }
       }
     }
   }
 
-  scan(rootDir);
+  scan(outDir);
+
+  // Standalone zero-dependency package.json
+  const staticPkgJson = {
+    name: 'feluda-web-static',
+    version: '1.0.0',
+    private: true,
+    scripts: {
+      build: 'node restore-binaries.js'
+    }
+  };
+
+  files.push({
+    path: 'package.json',
+    content: JSON.stringify(staticPkgJson, null, 2)
+  });
+
+  // Binary restoration script for fonts and webp images
+  const restoreScript = `const fs = require('fs');
+const path = require('path');
+
+const binaryData = ${JSON.stringify(binaryMap)};
+
+for (const [relPath, b64] of Object.entries(binaryData)) {
+  const buf = Buffer.from(b64, 'base64');
+  for (const dir of ['dist', 'out']) {
+    const target = path.join(process.cwd(), dir, relPath);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, buf);
+  }
+}
+console.log('Successfully restored ' + Object.keys(binaryData).length + ' binary assets in dist/ and out/.');
+`;
+
+  files.push({
+    path: 'restore-binaries.js',
+    content: restoreScript
+  });
+
   return files;
 }
 
@@ -137,25 +181,17 @@ async function deploy() {
   });
   console.log('[FuncHole] Created version:', fnVersion.id, 'v' + fnVersion.version);
 
-  // 3. Collect source files
-  const rootDir = process.cwd();
-  console.log('[FuncHole] Collecting source files...');
-  const sourceFiles = collectSourceFiles(rootDir);
-  console.log(`[FuncHole] Collected ${sourceFiles.length} text source files`);
-
-  // Verify restore-assets is in the list
-  const hasRestore = sourceFiles.some(f => f.path === 'scripts/restore-assets.js');
-  if (!hasRestore) {
-    throw new Error('scripts/restore-assets.js is missing from source files!');
-  }
+  // 3. Prepare deployment bundle
+  const deployFiles = prepareDeployFiles();
+  console.log(`[FuncHole] Prepared ${deployFiles.length} files for static deployment`);
 
   // 4. Submit source
-  console.log('[FuncHole] Submitting source files...');
+  console.log('[FuncHole] Submitting source files to FuncHole...');
   await client.callTool('submit_function_version_source', {
     functionId: fn.id,
     versionId: fnVersion.id,
     entrypoint: 'package.json',
-    files: sourceFiles
+    files: deployFiles
   });
   console.log('[FuncHole] Source files submitted successfully.');
 
@@ -172,13 +208,13 @@ async function deploy() {
   let attempts = 0;
   while (status === 'PUBLISHING' || status === 'DRAFT') {
     attempts++;
-    await new Promise(r => setTimeout(r, 4000));
+    await new Promise(r => setTimeout(r, 3000));
     const current = await client.callTool('get_function_version', {
       functionId: fn.id,
       versionId: fnVersion.id
     });
     status = current.status;
-    process.stdout.write(`  [${attempts * 4}s] Status: ${status}\r`);
+    process.stdout.write(`  [${attempts * 3}s] Status: ${status}\r`);
 
     if (status === 'FAILED') {
       console.log('\n[FuncHole] Build failed! Fetching build logs...');
@@ -229,7 +265,7 @@ async function deploy() {
   console.log('[FuncHole] Adopting dedicated FlowVersion...');
   await client.callTool('adopt_flow_version', {
     flowId: dedicatedFlow.id,
-    flowVersionId: dFlowVersion.id
+    versionId: dFlowVersion.id
   });
 
   console.log('\n=============================================');
