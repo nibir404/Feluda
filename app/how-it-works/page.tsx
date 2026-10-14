@@ -1,108 +1,36 @@
-import { PageHero } from "@/components/primitives/PageHero";
-import { PageCta } from "@/components/sections/PageCta";
-import { ColoredCardGrid } from "@/components/sections/ColoredCardGrid";
-import { PublishMockup, CodeMockupQuery, OptimizeMockup } from "./mockups";
-import { howItWorksPageContent, routes } from "@/lib/content";
+import fs from "node:fs";
+import path from "node:path";
+import type { Metadata } from "next";
+import { RoomsSvg, Intake, InvestigateResolve, DataHandling } from "@/components/how/HowParts";
+import { NextChapter, wrap } from "@/components/ui";
+import CTA from "@/components/CTA";
+import Reveal from "@/components/HeroReveal";
 
-export const metadata = {
-  title: "How it Works",
-  description:
-    "Feluda connects to your repository, builds a continuous understanding of your codebase, and exposes that understanding as reasoning.",
+export const metadata: Metadata = {
+  title: "How it works — from a push to a verdict",
+  description: "Feluda reads the whole case file — your diff, your codebase and your production evidence — forms hypotheses, proves them, and only sends you the conclusion.",
+  alternates: { canonical: "/how-it-works" },
 };
 
-export default function HowItWorksPage() {
-  const { hero, pipeline } = howItWorksPageContent;
+export default function How() {
+  const svg = fs.readFileSync(path.join(process.cwd(), "lib/rooms.svg"), "utf8").replace(' width="1248" height="560"', ' role="img" aria-label="Three isometric rooms: observe, investigate, resolve"');
   return (
     <>
-      <PageHero
-        eyebrow={hero.eyebrow}
-        headline={hero.headline}
-        supporting={hero.supporting}
-        primaryCta={{ label: hero.primaryCta, href: routes.auth.signup }}
-        secondaryCta={
-          hero.secondaryCta
-            ? { label: hero.secondaryCta, href: routes.resources.docs }
-            : undefined
-        }
-      />
-
-      {/* Three-stage pipeline visualized as colored cards with a side rail. */}
-      <ColoredCardGrid
-        eyebrow="THE PIPELINE"
-        headline="Three stages from repository to answers."
-        supporting="Feluda continuously maps your repository, exposes that map as queryable APIs, and optimizes query execution as your codebase grows."
-        rail={[
-          { id: "publish", label: "Publish" },
-          { id: "code", label: "Code" },
-          { id: "optimize", label: "Optimize" },
-        ]}
-        cards={[
-          {
-            id: "publish",
-            eyebrow: "01 · Publish",
-            heading: "Publish data as APIs and code packages.",
-            supporting:
-              "Select tables or dbt models from a source and publish query interfaces instantly. No ETL or API development necessary.",
-            checks: [
-              {
-                title: "Configurable runtime interfaces",
-                body: "Python, TypeScript, C#, and GraphQL out of the box.",
-              },
-              {
-                title: "Contextual metadata",
-                body: "Provides descriptions, ownership, and schema definitions.",
-              },
-            ],
-            mockup: <PublishMockup />,
-          },
-          {
-            id: "code",
-            eyebrow: "02 · Code",
-            heading: "Query data immediately.",
-            supporting:
-              "Run OLAP, OLTP, and search queries with a single interface. Data packages are immediately queryable and designed for seamless integration in application code.",
-            checks: [
-              {
-                title: "Federate into a larger GraphQL API",
-                body: "Or import as a library into your code.",
-              },
-              {
-                title: "Generated query interface",
-                body: "Provides helper functions and autocorrect in your IDE.",
-              },
-            ],
-            mockup: <CodeMockupQuery />,
-          },
-          {
-            id: "optimize",
-            eyebrow: "03 · Optimize",
-            heading: "Optimize when you're ready.",
-            supporting:
-              "By default, queries hit your compute engine. When moving into production, upgrade the package for low latency and high availability across all workloads.",
-            checks: [
-              {
-                title: "Accelerate packages",
-                body: "Guarantee reliability with one click.",
-              },
-              {
-                title: "Switch a package's source",
-                body: "Or other configurations with GUI or code.",
-              },
-            ],
-            mockup: <OptimizeMockup />,
-          },
-        ]}
-      />
-
-      <PageCta
-        headline={hero.headline}
-        subheadline="See the full pipeline and architecture in detail."
-        primary={{ label: hero.primaryCta, href: routes.auth.signup }}
-        secondary={{
-          label: "Read documentation",
-          href: routes.resources.docs,
-        }}
-      />
+      <section className="overflow-hidden">
+        <div className={`${wrap} flex flex-col items-center gap-6 pt-36 text-center md:pt-[202px]`}>
+          <Reveal>
+            <p className="font-mono text-[12px] leading-4 tracking-[0.16em] text-accent">THE METHOD · HOW FELUDA WORKS A CASE</p>
+            <h1 className="mx-auto mt-6 max-w-[1000px] text-[clamp(48px,6.7vw,96px)] font-semibold leading-[0.96] tracking-[-0.055em]">From a push to a verdict, in five layers.</h1>
+            <p className="mx-auto mt-6 max-w-[620px] text-[18px] leading-[28px] text-[#C9CBBF] md:text-[19px] md:leading-[30px]">Feluda doesn&apos;t lint lines. It reads the whole case file: your diff, your codebase and your production evidence.</p>
+          </Reveal>
+        </div>
+        <div className={`${wrap} pb-16 pt-8 md:pt-16`}><RoomsSvg svg={svg} /></div>
+      </section>
+      <div className="border-t border-border"><Intake /></div>
+      <InvestigateResolve />
+      <DataHandling />
+      <NextChapter tone="accent" href="/pricing" label="NEXT · EPILOGUE" title="Retain the detective with Puku Team." />
+      <CTA />
     </>
   );
 }

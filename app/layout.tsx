@@ -1,114 +1,61 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif, Anybody } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import "./redesign.css";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
+import { site } from "@/lib/site";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Cursor from "@/components/Cursor";
 
-const display = Anybody({ subsets: ["latin"], display: "swap", variable: "--font-display" });
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-mono",
-});
-
-const serif = Instrument_Serif({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-serif",
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-tx", display: "swap" });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Feluda — Codebase Intelligence for Engineering Teams",
-    template: "%s · Feluda",
-  },
-  description:
-    "Feluda understands your entire codebase, investigates how and why things happen, and analyzes changes in the context of the whole system.",
-  icons: {
-    icon: [
-      { url: "/Favicon.png", type: "image/png", sizes: "any" },
-    ],
-    apple: [{ url: "/Favicon.png", type: "image/png", sizes: "any" }],
-    shortcut: ["/Favicon.png"],
-  },
-  openGraph: {
-    title: "Feluda — Codebase Intelligence for Engineering Teams",
-    description:
-      "Feluda understands your entire codebase, investigates how and why things happen, and analyzes changes in the context of the whole system.",
-    type: "website",
-    images: [{ url: "/Favicon.png" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Feluda — Codebase Intelligence",
-    description:
-      "Feluda understands your entire codebase, investigates how and why things happen, and analyzes changes in the context of the whole system.",
-    images: ["/Favicon.png"],
-  },
+  metadataBase: new URL(site.url),
+  title: { default: `${site.name} — AI code review & agentic pentests`, template: `%s · ${site.name}` },
+  description: site.description,
+  applicationName: site.name,
+  keywords: ["AI code review", "pull request review", "agentic pentest", "GitHub code review", "GitLab merge request review", "root cause analysis", "Puku"],
+  openGraph: { type: "website", url: site.url, siteName: site.name, title: site.name, description: site.description },
+  twitter: { card: "summary_large_image", title: site.name, description: site.description },
+  alternates: { canonical: "/" },
 };
 
-// Anti-FOUC script: runs synchronously before React hydration.
-// Paper is the default canvas; only opt out to charcoal workspace
-// when the OS explicitly prefers light (paper) OR the user has
-// explicitly chosen dark mode.
-const themeScript = `
-(function() {
-  try {
-    var stored = localStorage.getItem('feluda-theme');
-    var mode = stored || 'system';
-    var resolved = mode;
-    if (mode === 'system') {
-      // Paper is the default. Honor an explicit OS *light* preference
-      // (paper); otherwise resolve to charcoal workspace.
-      resolved = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    }
-    var root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(resolved);
-    root.dataset.themeMode = mode;
-  } catch (e) {}
-})();
-`;
+export const viewport: Viewport = { themeColor: "#151614", width: "device-width", initialScale: 1 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": `${site.url}#org`, name: "Puku", url: "https://puku.sh" },
+    {
+      "@type": "SoftwareApplication",
+      name: site.name,
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Web",
+      description: site.description,
+      publisher: { "@id": `${site.url}#org` },
+      offers: { "@type": "Offer", category: "Included with Puku Team and Enterprise plans" },
+      featureList: [
+        "AI pull request review on GitHub and GitLab",
+        "Root-cause investigation with confidence scoring",
+        "Agentic penetration testing with exploit-verified findings",
+        "Team analytics",
+      ],
+    },
+  ],
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${jetbrains.variable} ${serif.variable} ${display.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body className="bg-bg-base text-ink-primary antialiased font-sans relative">
-        <ThemeProvider>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-accent focus:text-on-accent focus:font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-base focus:shadow-lg"
-          >
-            Skip to main content
-          </a>
-          <Navigation />
-          <main id="main" tabIndex={-1} className="outline-none relative">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+    <html lang="en" className={mono.variable}>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] btn btn-primary">Skip to content</a>
+        <SmoothScroll />
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+        <Cursor />
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );

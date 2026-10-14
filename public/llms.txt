@@ -1,0 +1,18 @@
+# Feluda
+
+> Feluda is Puku's AI code reviewer and agentic pentester. It reviews every pull request on GitHub and GitLab — reading the diff, its callers and production evidence — and posts one evidence-backed comment with a confidence score and a committable fix. Feluda Attack runs AI agents against your staging app, proves what is exploitable, and drafts the fix. Feluda is included with Puku Team and Enterprise; it is not sold separately.
+
+## Product
+- [Review](https://feluda.puku.sh/review): PR summaries, ranked findings, confidence score (out of 5), inline fixes, analytics. GitHub and GitLab.
+- [Attack](https://feluda.puku.sh/attack): 402 agents per assessment; targets: web, API, Android, MCP, LLM; SOC 2 / ISO-ready reports; daily attack-surface monitoring.
+- [How it works](https://feluda.puku.sh/how-it-works): Observe → Investigate → Resolve.
+- [Pricing](https://feluda.puku.sh/pricing): Included in Puku Team and Enterprise; runs draw from the plan's monthly requests and pause at 90%.
+
+## Docs
+- [Quick start](https://feluda.puku.sh/docs)
+- [Connect a provider](https://feluda.puku.sh/docs/connect-provider)
+- [Comment scope](https://feluda.puku.sh/docs/comment-scope)
+- [Run a pentest](https://feluda.puku.sh/docs/run-pentest)
+- [Troubleshooting](https://feluda.puku.sh/docs/troubleshooting)
+- [Requests & limits](https://feluda.puku.sh/docs/requests-limits)
+- [Changelog](https://feluda.puku.sh/changelog)
