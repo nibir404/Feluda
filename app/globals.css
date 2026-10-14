@@ -17,7 +17,7 @@
   --radius-control: 6px;
   --radius-btn: 8px;
   --radius-panel: 12px;
-  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-matter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-tx), ui-monospace, monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -99,3 +99,13 @@ body { font-family: var(--font-sans); overflow-x: hidden; }
 .rooms[data-room="1"] [layer-name="Magnifier"] { transform: translate(-30px, -12px); }
 .rooms[data-room="2"] [layer-name="Verdict plate"] { transform: translateY(-12px); filter: drop-shadow(0 0 22px rgba(148,199,160,.6)); }
 .rooms g[layer-name]:hover { transform: translateY(-8px); }
+
+@keyframes shimmer { to { transform: translateX(100%); } }
+
+/* Mobile app shell: room for the bottom tab bar, native-feeling touch */
+@media (max-width: 1023px) {
+  body { padding-bottom: calc(61px + env(safe-area-inset-bottom)); -webkit-tap-highlight-color: transparent; }
+  html { overscroll-behavior-y: none; }
+  a, button { -webkit-touch-callout: none; }
+}
+html, body { max-width: 100%; overflow-x: clip; }

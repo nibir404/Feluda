@@ -341,7 +341,6 @@ export function CodeAnalysis() {
         <div className="flex shrink-0 flex-col gap-5 lg:w-[400px]">
           <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-danger">AI CODE ANALYSIS</p>
           <h2 className="text-[clamp(36px,4vw,48px)] font-semibold leading-[1.04] tracking-[-0.04em]">A security audit of the code itself.</h2>
-          <p className="text-[17px] leading-[26px] text-muted">Pick repos and docs. See the exact request cost before you start. Results land in Pull Requests and Slack.</p>
         </div>
         <div className="flex w-full min-w-0 flex-1 flex-col gap-5">
           <div className="flex flex-col gap-2.5">
@@ -405,17 +404,17 @@ export function Surface() {
       <div className={`${wrap} flex flex-col gap-10 py-24 md:py-[112px]`}>
         <SecHead tone="danger" eyebrow="ATTACK SURFACE · MONITORED DAILY" title="Everything you expose to the internet." side="Subdomain takeovers, leaked credentials, open ports and spoofable mail, each with the one action that fixes it." />
         <div className="overflow-x-auto rounded-[12px] border border-[#34362E] bg-[#1C1D1A] scrollbar-none">
-          <div className="min-w-[720px]">
-            <div className="flex gap-[18px] border-b border-[#34362E] px-6 py-3 text-[11px] leading-4 tracking-[0.08em] text-[#62665B]">
+          <div className="md:min-w-[720px]">
+            <div className="hidden gap-[18px] border-b md:flex border-[#34362E] px-6 py-3 text-[11px] leading-4 tracking-[0.08em] text-[#62665B]">
               <span className="flex-1">ASSET</span><span className="w-[200px] shrink-0">ISSUE</span><span className="w-[120px] shrink-0">SCAN</span><span className="w-[150px] shrink-0">ACTION</span>
             </div>
             {surface.map(([a, d, iss, c, scan, action], i) => (
               <motion.div key={a} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className={`flex items-center gap-[18px] px-6 py-4 transition-colors hover:bg-[#242620] ${i < 3 ? "border-b border-[#34362E]" : ""}`}>
-                <span className={`flex flex-1 flex-col gap-1 ${done.includes(i) ? "opacity-40" : ""}`}><span className="text-[14px] leading-[18px]">{a}</span><span className="text-[12px] leading-4 text-[#9DA193]">{d}</span></span>
-                <span className="w-[200px] shrink-0 text-[13px] leading-[18px]" style={{ color: done.includes(i) ? "#8FA894" : c }}>{done.includes(i) ? "✓ Resolved" : iss}</span>
-                <span className="w-[120px] shrink-0 text-[12px] leading-4 text-[#9DA193]">{scan}</span>
-                <button disabled={done.includes(i)} onClick={() => act(i)} className="flex w-[150px] shrink-0 items-center gap-2 text-left text-[13px] leading-[18px] text-[#B0B3FC] enabled:hover:brightness-125 disabled:text-[#62665B]">
+                className={`flex flex-wrap items-center gap-x-[18px] gap-y-2 px-4 py-4 transition-colors hover:bg-[#242620] md:flex-nowrap md:px-6 ${i < 3 ? "border-b border-[#34362E]" : ""}`}>
+                <span className={`flex basis-full flex-col gap-1 md:basis-auto md:flex-1 ${done.includes(i) ? "opacity-40" : ""}`}><span className="text-[14px] leading-[18px]">{a}</span><span className="text-[12px] leading-4 text-[#9DA193]">{d}</span></span>
+                <span className="flex-1 text-[13px] leading-[18px] md:w-[200px] md:flex-none md:shrink-0" style={{ color: done.includes(i) ? "#8FA894" : c }}>{done.includes(i) ? "✓ Resolved" : iss}</span>
+                <span className="hidden w-[120px] shrink-0 text-[12px] leading-4 text-[#9DA193] md:inline">{scan}</span>
+                <button disabled={done.includes(i)} onClick={() => act(i)} className="flex shrink-0 items-center gap-2 text-left md:w-[150px] text-[13px] leading-[18px] text-[#B0B3FC] enabled:hover:brightness-125 disabled:text-[#62665B]">
                   {busy === i && <span className="h-3 w-3 animate-spin rounded-full border border-accent border-t-transparent" />}{done.includes(i) ? "Done" : action}
                 </button>
               </motion.div>

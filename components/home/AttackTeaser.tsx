@@ -62,7 +62,6 @@ export default function AttackTeaser() {
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-danger">FELUDA ATTACK · AGENTIC PENTESTS</p>
             <h2 id="atk-title" className="max-w-[700px] text-[clamp(38px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]">Then it breaks in, before someone else does.</h2>
           </div>
-          <p className="max-w-[400px] shrink-0 text-[17px] leading-[26px] text-muted">402 agents form hypotheses about your app, try them for real, and only report what they could actually exploit.</p>
         </div>
 
         <div className="flex flex-col overflow-hidden rounded-[16px] border border-border bg-bg">
@@ -123,18 +122,18 @@ export default function AttackTeaser() {
 
         <div className="overflow-hidden rounded-[16px] border border-border bg-bg p-1">
           <div className="overflow-x-auto rounded-[12px] bg-[#1C1D1A] scrollbar-none">
-            <div className="min-w-[760px]">
-              <div className="flex gap-[18px] border-b border-[#34362E] px-6 py-3 text-[11px] leading-4 tracking-[0.08em] text-[#62665B]">
+            <div className="md:min-w-[760px]">
+              <div className="hidden gap-[18px] border-b md:flex border-[#34362E] px-6 py-3 text-[11px] leading-4 tracking-[0.08em] text-[#62665B]">
                 <span className="w-[100px] shrink-0">AGENT</span><span className="flex-1">WHAT IT TRIED</span><span className="w-[160px] shrink-0">RESULT</span><span className="w-[90px] shrink-0">TIME</span><span className="w-[70px] shrink-0">REPLAY</span>
               </div>
               {agents.map(([a, t, r, rc, tm, st], i) => (
                 <div key={a} className={i < 4 ? "border-b border-[#34362E]" : ""}>
-                  <div className="flex items-center gap-[18px] px-6 py-[15px] transition-colors hover:bg-[#242620]">
+                  <div className="flex flex-wrap items-center gap-x-[18px] gap-y-1.5 px-4 py-[15px] transition-colors hover:bg-[#242620] md:flex-nowrap md:px-6">
                     <span className="w-[100px] shrink-0 font-mono text-[13px] leading-[18px] text-[#EEEEE5]">{a}</span>
-                    <span className="flex-1 text-[14px] leading-5 text-[#EEEEE5]">{t}</span>
-                    <span className="w-[160px] shrink-0 text-[13px] leading-[18px]" style={{ color: rc }}>{r}</span>
-                    <span className="w-[90px] shrink-0 text-[12px] leading-4 text-[#9DA193]">{tm}</span>
-                    <button onClick={() => setWatch(watch === a ? null : a)} className="w-[70px] shrink-0 text-left text-[13px] leading-[18px] text-[#B0B3FC] hover:brightness-125">{watch === a ? "■ Stop" : "▶ Watch"}</button>
+                    <span className="order-last basis-full text-[14px] leading-5 text-[#EEEEE5] md:order-none md:basis-auto md:flex-1">{t}</span>
+                    <span className="flex-1 text-[13px] md:w-[160px] md:flex-none md:shrink-0 leading-[18px]" style={{ color: rc }}>{r}</span>
+                    <span className="hidden w-[90px] shrink-0 text-[12px] md:inline leading-4 text-[#9DA193]">{tm}</span>
+                    <button onClick={() => setWatch(watch === a ? null : a)} className="shrink-0 text-left text-[13px] md:w-[70px] leading-[18px] text-[#B0B3FC] hover:brightness-125">{watch === a ? "■ Stop" : "▶ Watch"}</button>
                   </div>
                   <AnimatePresence>{watch === a && <Replay steps={st} />}</AnimatePresence>
                 </div>

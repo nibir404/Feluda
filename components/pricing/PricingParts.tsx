@@ -24,7 +24,6 @@ export function Plans() {
         <motion.div whileHover={{ opacity: 1 }} className="flex shrink-0 flex-col gap-5 rounded-[16px] border border-dashed border-border p-8 opacity-70 lg:w-[300px]">
           <p className="font-mono text-[11px] leading-[14px] tracking-[0.12em] text-muted">PUKU FREE · PRO</p>
           <p className="text-[28px] font-semibold leading-[34px] tracking-[-0.02em]">Feluda not included</p>
-          <p className="text-[15px] leading-[23px] text-muted">Individual plans keep Puku&apos;s core workspace. Upgrade to Team to bring in the detective.</p>
           <a href="#faq" className="mt-auto flex h-[46px] items-center justify-center rounded-[8px] border border-border text-[15px] leading-[18px] hover:bg-hover">Upgrade to Team</a>
         </motion.div>
         <motion.div onMouseEnter={() => setHover(0)} onMouseLeave={() => setHover(null)} animate={{ y: hover === 0 ? -6 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 24 }}

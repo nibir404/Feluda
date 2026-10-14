@@ -13,7 +13,7 @@ export default function Review() {
   return (
     <>
       <ProductHero eyebrow="CHAPTER 01 · REVIEW · CATCH IT BEFORE MERGE" title="A second pair of eyes that never blinks."
-        sub="Every pull request gets a summary, ranked findings, a confidence score and a fix you can commit. On GitHub and GitLab, in under a minute."
+        sub="Ranked findings and a one-click fix on every pull request."
         cta="Get Feluda with Puku Team" secondary="Read the docs">
         <HeroCard />
       </ProductHero>

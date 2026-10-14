@@ -55,7 +55,6 @@ export default function LiveReview() {
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">LIVE REVIEW · INTERACTIVE</p>
             <h2 id="live-title" className="max-w-[680px] text-[clamp(38px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]">Catches the bug your reviewer scrolled past.</h2>
           </div>
-          <p className="max-w-[380px] shrink-0 text-[17px] leading-[26px] text-muted">Click any finding to jump to the line. Hit &ldquo;Apply fix&rdquo; to see the suggested commit.</p>
         </div>
 
         <div className="flex flex-col overflow-hidden rounded-panel border border-border bg-sidebar lg:flex-row">

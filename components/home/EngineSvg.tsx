@@ -25,9 +25,9 @@ export default function EngineSvg({ svg }: { svg: string }) {
     el.dataset.hovering = active ? "1" : "";
   }, [active]);
   return (
-    <div className="relative -mx-5 overflow-x-auto scrollbar-none md:mx-0">
-      <div ref={ref} className="engine min-w-[760px]" dangerouslySetInnerHTML={{ __html: svg }} />
-      <p className="mt-2 px-5 font-mono text-[11px] tracking-[0.1em] text-muted md:px-0">{active ? `LAYER ${active.toUpperCase()}` : "HOVER A LAYER"}</p>
+    <div className="relative">
+      <div ref={ref} className="engine w-full [&_svg]:h-auto [&_svg]:w-full" dangerouslySetInnerHTML={{ __html: svg }} />
+      <p className="mt-2 font-mono text-[11px] tracking-[0.1em] text-muted">{active ? `LAYER ${active.toUpperCase()}` : "TAP A LAYER"}</p>
     </div>
   );
 }

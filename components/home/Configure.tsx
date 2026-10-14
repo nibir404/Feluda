@@ -52,7 +52,6 @@ export default function Configure() {
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">REVIEW CONFIGURATION · TRY IT</p>
             <h2 id="cfg-title" className="max-w-[620px] text-[clamp(38px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]">Tell the detective what to report.</h2>
           </div>
-          <p className="max-w-[380px] shrink-0 text-[17px] leading-[26px] text-muted">Turn a section on and the preview updates. These are the same four steps your team sees in onboarding.</p>
         </div>
 
         <div className="flex flex-col gap-6 lg:flex-row">

@@ -1,59 +1,32 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
+import { Dither } from "./ui";
+import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
 
-const ramp = " .·:-=+*#";
+const ease = [0.16, 1, 0.3, 1] as const;
 
-/** ASCII field from the design: chars cycle density in slow drifting waves; the pointer stirs them. */
-function Ascii() {
-  const ref = useRef<HTMLPreElement>(null);
-  useEffect(() => {
-    const el = ref.current!;
-    const cols = 66, rows = 18;
-    let t = 0, raf = 0, vis = false, mx = -99, my = -99;
-    const io = new IntersectionObserver(([e]) => (vis = e.isIntersecting)); io.observe(el);
-    const move = (e: PointerEvent) => { const r = el.getBoundingClientRect(); mx = ((e.clientX - r.left) / r.width) * cols; my = ((e.clientY - r.top) / r.height) * rows; };
-    el.closest("section")!.addEventListener("pointermove", move);
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const loop = () => {
-      raf = requestAnimationFrame(loop);
-      if (!vis) return;
-      if (!reduce) t += 0.012;
-      let s = "";
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const grad = Math.pow(x / cols, 1.5);
-          const w = Math.sin(x * 0.18 - t * 2 + Math.sin(y * 0.4 + t)) * 0.5 + 0.5;
-          const blob = Math.exp(-((x - 50 - Math.sin(t) * 6) ** 2 / 160 + (y - 7 - Math.cos(t * 0.7) * 3) ** 2 / 30));
-          const d = Math.hypot((x - mx) * 0.5, y - my);
-          const stir = d < 5 ? (5 - d) / 5 : 0;
-          const sparse = x < 36 && (x + y * 3) % 9 !== 0 ? 0 : 1;
-          const v = Math.min(0.999, (grad * 0.55 + w * 0.25 * grad + blob * 0.55 + stir * 0.6) * (sparse || grad > 0.45 ? 1 : 0));
-          s += ramp[Math.floor(v * ramp.length)];
-        }
-        s += "\n";
-      }
-      el.textContent = s;
-    };
-    loop();
-    return () => { cancelAnimationFrame(raf); io.disconnect(); };
-  }, []);
-  return <pre ref={ref} aria-hidden className="select-none font-mono text-[13px] leading-[26px] text-[#5F6188]" />;
-}
-
-export default function CTA({ title = "Put Feluda on your next pull request.", eyebrow = "YOUR NEXT CASE" }: { title?: string; eyebrow?: string }) {
+/** Minimal close: one line, one button. A hairline glow tracks the pointer across the top edge. */
+export default function CTA({ title = "Close your next case.", eyebrow = "CASE Nº 1285 · OPEN" }: { title?: string; eyebrow?: string }) {
+  const ref = useRef<HTMLElement>(null);
+  const x = useSpring(useMotionValue(50), { stiffness: 120, damping: 24 });
+  const line = useMotionTemplate`linear-gradient(90deg, transparent calc(${x}% - 30%), #B0B3FC ${x}%, transparent calc(${x}% + 30%))`;
+  const glow = useMotionTemplate`radial-gradient(500px circle at ${x}% 0%, #B0B3FC24, transparent 65%)`;
+  const move = (e: React.PointerEvent) => { const r = ref.current!.getBoundingClientRect(); x.set(((e.clientX - r.left) / r.width) * 100); };
   return (
-    <section className="relative overflow-hidden border-t border-border md:h-[560px]" aria-labelledby="cta-title">
-      <div className="pointer-events-none absolute left-[22%] top-12 opacity-60 md:left-[41.6%] md:opacity-100"><Ascii /></div>
-      <div className="relative mx-auto max-w-[1440px] px-5 py-28 md:px-24 md:pt-[136px]">
-        <div className="flex max-w-[640px] flex-col gap-8">
-          <p className="font-mono text-[12px] leading-4 tracking-[0.14em] text-accent">{eyebrow}</p>
-          <h2 id="cta-title" className="text-[clamp(48px,6vw,80px)] font-semibold leading-[0.95] tracking-[-0.05em]">{title}</h2>
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-7">
-            <Link href="/pricing" className="btn btn-primary">Continue with Puku</Link>
-            <span className="text-[16px] leading-5 text-muted">Included in Puku Team &amp; Enterprise</span>
-          </div>
-        </div>
+    <section ref={ref} onPointerMove={move} onPointerLeave={() => x.set(50)} className="relative overflow-hidden border-t border-border" aria-labelledby="cta-title">
+      <div aria-hidden className="dots pointer-events-none absolute inset-0 opacity-70 [mask-image:radial-gradient(ellipse_60%_70%_at_50%_40%,#000_20%,transparent_75%)]" />
+      <Dither size={[1200, 1200]} className="left-1/2 top-[140px] -translate-x-1/2 opacity-[0.16]" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
+      <motion.div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: line }} />
+      <motion.div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: glow }} />
+      <div className="relative mx-auto flex max-w-[1440px] flex-col items-center gap-9 px-5 pb-28 pt-28 text-center md:px-24 md:pb-32 md:pt-36">
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-mono text-[12px] leading-4 tracking-[0.14em] text-muted">{eyebrow}</motion.p>
+        <motion.h2 id="cta-title" initial={{ opacity: 0, y: 24, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 0.9, ease }} className="text-[clamp(44px,6vw,80px)] font-semibold leading-none tracking-[-0.05em]">{title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.7, ease }} className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5">
+          <Link href="https://puku.sh/login" className="btn btn-primary group">Continue with Puku <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span></Link>
+          <span className="font-mono text-[12px] tracking-[0.06em] text-muted">PUKU TEAM &amp; ENTERPRISE</span>
+        </motion.div>
       </div>
     </section>
   );

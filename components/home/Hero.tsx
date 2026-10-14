@@ -33,7 +33,7 @@ export default function Hero() {
     <div className={styles.intro}>
       <p className={styles.eyebrow}>AI code review &amp; agentic pentesting</p>
       <h1 id="hero-title">Find the bugs.<br />Ship with confidence.</h1>
-      <p className={styles.description}>Feluda reviews your pull requests and tests your app for vulnerabilities. Trace every finding. Fix it before you ship.</p>
+      <p className={styles.description}>Reviews every PR. Attacks your app. Hands you the fix.</p>
       <div className={styles.actions}><Link className="btn btn-primary" href="https://puku.sh/login">Continue with Puku →</Link><button onClick={explore}>Try the live demo ↗</button></div>
     </div>
     <div ref={demo} tabIndex={-1} className={styles.demoAnchor}><ProductDemo tour={tour} /></div>

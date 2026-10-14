@@ -31,7 +31,6 @@ export function Principles() {
             className={`group flex flex-col gap-3.5 py-10 md:py-14 ${i === 0 ? "md:pr-10" : i === 1 ? "border-t border-border md:border-l md:border-t-0 md:px-10" : "border-t border-border md:border-l md:border-t-0 md:pl-10"}`}>
             <p className="font-mono text-[12px] leading-4 text-accent">0{i + 1}</p>
             <p className="text-[24px] font-semibold leading-8 tracking-[-0.02em] transition-transform duration-500 group-hover:translate-x-1 md:text-[26px]">{t}</p>
-            <p className="text-[15px] leading-6 text-muted">{d}</p>
           </motion.div>
         ))}
       </div>
@@ -48,7 +47,6 @@ export function Security() {
         <div className="flex shrink-0 flex-col gap-4 lg:w-[420px]">
           <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-success">SECURITY &amp; TRUST</p>
           <h2 className="text-[clamp(36px,4vw,48px)] font-semibold leading-[1.04] tracking-[-0.04em]">A detective you can let into the building.</h2>
-          <p className="text-[16px] leading-[25px] text-muted">[To confirm with Puku security] Certifications, retention and subprocessors below are placeholders.</p>
         </div>
         <div className="grid flex-1 gap-4 sm:grid-cols-2">
           {trust.map(([k, t, d], i) => (
@@ -76,7 +74,6 @@ export function Contact() {
         <div className="flex shrink-0 flex-col gap-4 lg:w-[420px]">
           <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">OPEN A CONVERSATION</p>
           <h2 className="text-[clamp(36px,4vw,48px)] font-semibold leading-[1.04] tracking-[-0.04em]">Bring Feluda to your enterprise.</h2>
-          <p className="text-[16px] leading-[25px] text-muted">Custom volume, SSO, self-hosted GitLab and a compliance report pack. We usually reply within a day.</p>
         </div>
         <form onSubmit={(e) => { e.preventDefault(); if (!valid) return; setState("sending"); setTimeout(() => setState("sent"), 1200); }} className="relative flex flex-1 flex-col gap-4 overflow-hidden rounded-[16px] border border-border bg-panel p-6 md:p-8">
           <AnimatePresence mode="wait">
