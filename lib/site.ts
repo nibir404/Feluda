@@ -29,11 +29,12 @@ export const nav = [
   },
   { label: "How it works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Roadmap", href: "/roadmap" },
   { label: "Docs", href: "/docs" },
 ] as const;
 
 export const footerCols = [
   { title: "Product", links: [["Review", "/review"], ["Attack", "/attack"], ["How it works", "/how-it-works"], ["Pricing", "/pricing"]] },
-  { title: "Developers", links: [["Docs", "/docs"], ["Changelog", "/changelog"], ["Status", "/about#security"], ["llms.txt", "/llms.txt"]] },
+  { title: "Developers", links: [["Docs", "/docs"], ["Changelog", "/changelog"], ["Roadmap", "/roadmap"], ["Status", "/about#security"], ["llms.txt", "/llms.txt"]] },
   { title: "Company", links: [["About", "/about"], ["Security", "/about#security"], ["Puku", "https://puku.sh"]] },
 ] as const;

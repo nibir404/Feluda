@@ -58,7 +58,6 @@ export function PRInbox() {
         <div className="flex shrink-0 flex-col gap-4 lg:w-[380px]">
           <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">PULL REQUESTS · TRY THE SEARCH</p>
           <h2 className="text-[clamp(36px,4vw,48px)] font-semibold leading-[1.04] tracking-[-0.04em]">Every review, one search away.</h2>
-          <p className="text-[17px] leading-[26px] text-muted">Type a repo, an author or a bug class. Rows open the original merge request in a new tab.</p>
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-8 rounded-[16px] border border-border bg-panel p-5 md:p-8">
           <div className="flex flex-col gap-3">
@@ -280,7 +279,6 @@ export function MemoryIntegrations() {
           <div className="relative flex flex-col gap-3.5">
             <p className="font-mono text-[11px] leading-[14px] tracking-[0.12em] text-accent">MEMORY · COMING SOON</p>
             <p className="max-w-[400px] text-[30px] font-semibold leading-[36px] tracking-[-0.03em] md:text-[36px] md:leading-10">A detective never forgets a case.</p>
-            <p className="max-w-[380px] text-[16px] leading-[25px] text-muted">Feluda will learn your conventions, past incidents and the feedback you give, so every review is sharper than the last.</p>
           </div>
           <div className="relative">
             <AnimatePresence mode="wait">

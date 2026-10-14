@@ -13,7 +13,7 @@ export default function Attack() {
   return (
     <>
       <ProductHero tone="danger" eyebrow="CHAPTER 02 · ATTACK · CATCH WHAT REVIEW CAN'T SEE" title="Think like the intruder. Fix like the owner."
-        sub="AI agents map your app, form attack hypotheses, prove what's exploitable on staging, and hand you the fix. Reports are SOC 2 and ISO ready."
+        sub="AI agents attack your staging app and hand you the fix."
         cta="Get Feluda with Puku Team" secondary="See a sample report" secondaryHref="#finding" halo>
         <ReportStack />
       </ProductHero>

@@ -13,8 +13,8 @@ export function RoomsSvg({ svg }: { svg: string }) {
   useEffect(() => { ref.current!.dataset.room = String(room); }, [room]);
   return (
     <div className="flex flex-col items-center gap-6">
-      <div className="w-full overflow-x-auto scrollbar-none">
-        <div ref={ref} className="rooms mx-auto min-w-[720px] max-w-[1248px]" dangerouslySetInnerHTML={{ __html: svg }} />
+      <div className="w-full">
+        <div ref={ref} className="rooms mx-auto w-full max-w-[1248px] [&_svg]:h-auto [&_svg]:w-full" dangerouslySetInnerHTML={{ __html: svg }} />
       </div>
       <div className="flex gap-1 rounded-full border border-border p-1">
         {["01 Observe", "02 Investigate", "03 Resolve"].map((l, i) => (
@@ -76,7 +76,6 @@ export function Intake() {
       <div className={`${wrap} flex flex-col gap-3 pt-24 md:pt-[112px]`}>
         <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">01 · OBSERVE</p>
         <h2 className="max-w-[700px] text-[clamp(36px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]">It starts with the evidence.</h2>
-        <p className="max-w-[560px] text-[17px] leading-[26px] text-muted">Every push triggers a review. Feluda pulls the diff, the files it touches, their callers, and production signals like logs and error spikes.</p>
       </div>
       <div ref={ref} className={`${wrap} flex flex-col gap-6 pb-24 pt-10 md:pb-[112px]`}>
         <div className="flex flex-col gap-3.5 rounded-[12px] border border-[#34362E] bg-[#141512] p-[22px]">
@@ -162,7 +161,6 @@ export function InvestigateResolve() {
           <div className="flex flex-col gap-3">
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">02 · INVESTIGATE</p>
             <h2 className="text-[clamp(34px,3.6vw,44px)] font-semibold leading-[1.1] tracking-[-0.04em]">Hypotheses, then proof.</h2>
-            <p className="text-[17px] leading-[26px] text-muted">It forms theories about what could break, tests each against the code graph, and throws away what it can&apos;t prove.</p>
           </div>
           <div className="flex flex-col rounded-[16px] border border-border bg-panel p-5 md:p-7">
             {steps.map(([t, a, b], i) => {
@@ -183,7 +181,6 @@ export function InvestigateResolve() {
           <div className="flex flex-col gap-3">
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">03 · RESOLVE</p>
             <h2 className="text-[clamp(34px,3.6vw,44px)] font-semibold leading-[1.1] tracking-[-0.04em]">Only the conclusion reaches you.</h2>
-            <p className="text-[17px] leading-[26px] text-muted">One comment per finding, ranked by severity, with the cause, the trace, and a fix you can commit in one click.</p>
           </div>
           <div className="overflow-hidden rounded-[16px] border border-border bg-panel">
             <div className="flex items-center justify-between gap-3 border-b border-border px-6 py-4">

@@ -15,7 +15,6 @@ export default function Engine() {
             <p className="font-mono text-[12px] leading-4 tracking-[0.1em] text-accent">HOW IT WORKS</p>
             <h2 id="engine-title" className="max-w-[640px] text-[clamp(38px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]">Five layers between a push and a verdict.</h2>
           </div>
-          <p className="max-w-[380px] shrink-0 text-[17px] leading-[26px] text-muted">Evidence comes in from your providers. Feluda builds the case layer by layer, and only the conclusion reaches your PR.</p>
         </div>
         <EngineSvg svg={svg} />
       </div>

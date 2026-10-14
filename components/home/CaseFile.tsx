@@ -77,7 +77,6 @@ export default function CaseFile() {
       <h2 className="text-[clamp(52px,7vw,92px)] font-semibold leading-[0.935] tracking-[-0.055em]">Case 0482. Closed in two minutes.</h2>
       <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:gap-8">
         <Link href="/how-it-works" className="btn btn-primary shrink-0">Watch the full trace</Link>
-        <p className="max-w-[440px] text-[17px] leading-[26px] text-muted">Feluda read 3 files and 1,204 log lines and found the cause in 2 minutes. It reviews every pull request like this one.</p>
       </div>
     </div>
   );

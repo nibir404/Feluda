@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { site } from "@/lib/site";
 import SmoothScroll from "@/components/SmoothScroll";
 import Header from "@/components/Header";
+import TabBar from "@/components/TabBar";
 import Footer from "@/components/Footer";
 import Cursor from "@/components/Cursor";
 
-const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-tx", display: "swap" });
+const sans = localFont({ src: "./fonts/Matter.ttf", weight: "100 1000", variable: "--font-matter", display: "swap" });
+const mono = localFont({ src: "./fonts/TX-02.ttf", weight: "100 900", variable: "--font-tx", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export const viewport: Viewport = { themeColor: "#151614", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#151614", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -46,7 +48,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={mono.variable}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] btn btn-primary">Skip to content</a>
@@ -54,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <TabBar />
         <Cursor />
         <div className="grain" aria-hidden />
       </body>

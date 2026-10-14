@@ -11,7 +11,6 @@ const mono = "font-mono text-[11px] leading-[14px] tracking-[0.1em]";
 export default function Header() {
   const path = usePathname();
   const [open, setOpen] = useState<string | null>(null);
-  const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,8 +19,7 @@ export default function Header() {
     addEventListener("scroll", on, { passive: true });
     return () => removeEventListener("scroll", on);
   }, []);
-  useEffect(() => { setMobile(false); setOpen(null); }, [path]);
-  useEffect(() => { document.documentElement.style.overflow = mobile ? "hidden" : ""; }, [mobile]);
+  useEffect(() => { setOpen(null); }, [path]);
 
   if (path.startsWith("/docs")) return null;
   return (
@@ -35,16 +33,17 @@ export default function Header() {
           </div>
           <div className="flex items-center gap-6">
             <Link href="/changelog" className={`${mono} text-muted hover:text-text`}>CHANGELOG</Link>
+            <Link href="/roadmap" className={`${mono} text-muted hover:text-text`}>ROADMAP</Link>
             <Link href="/about#security" className={`${mono} text-muted hover:text-text`}>STATUS</Link>
             <Link href="/changelog" className={`${mono} text-accent hover:brightness-125`}>MEMORY · JOIN WAITLIST →</Link>
           </div>
         </div>
       </div>
 
-      <nav aria-label="Primary" onMouseLeave={() => setOpen(null)} className={`relative mx-auto flex max-w-[1440px] items-center justify-between px-5 transition-[padding] duration-500 md:px-10 ${scrolled ? "py-3" : "py-5"}`}>
+      <nav aria-label="Primary" onMouseLeave={() => setOpen(null)} className={`relative mx-auto flex max-w-[1440px] items-center justify-between px-5 transition-[padding] duration-500 md:px-10 ${scrolled ? "py-2.5 lg:py-3" : "py-3 lg:py-5"}`}>
         <Link href="/" className="flex items-center gap-3 lg:w-[280px]" aria-label="Feluda home">
-          <Logo size={30} />
-          <span className="text-[23px] font-semibold leading-7 tracking-[-0.03em]">feluda.</span>
+          <Logo size={28} />
+          <span className="text-[21px] font-semibold lg:text-[23px] leading-7 tracking-[-0.03em]">feluda.</span>
           <span className="hidden rounded-[4px] border border-border px-1.5 py-[3px] font-mono text-[10px] leading-3 tracking-[0.1em] text-muted sm:inline">BY PUKU</span>
         </Link>
 
@@ -65,14 +64,8 @@ export default function Header() {
 
         <div className="flex items-center justify-end gap-5 lg:w-[280px]">
           <Link href="https://puku.sh/login" className="hidden text-[14px] leading-[18px] text-text hover:text-accent sm:block">Sign in</Link>
-          <Link href="/pricing" className="btn btn-primary hidden  sm:inline-flex">Get started</Link>
-          <button aria-label={mobile ? "Close menu" : "Open menu"} aria-expanded={mobile} onClick={() => setMobile((m) => !m)}
-            className="grid h-9 w-9 place-items-center rounded-[8px] border border-border lg:hidden">
-            <span className="relative block h-3 w-4">
-              <span className={`absolute left-0 h-px w-4 bg-text transition-all ${mobile ? "top-1.5 rotate-45" : "top-0"}`} />
-              <span className={`absolute left-0 h-px w-4 bg-text transition-all ${mobile ? "top-1.5 -rotate-45" : "top-3"}`} />
-            </span>
-          </button>
+          <span className="hidden sm:block"><Link href="/pricing" className="btn btn-primary">Get started</Link></span>
+          <span className="sm:hidden"><Link href="/pricing" className="btn btn-primary btn-sm">Get started</Link></span>
         </div>
 
         <AnimatePresence>
@@ -97,27 +90,6 @@ export default function Header() {
         </AnimatePresence>
       </nav>
 
-      <AnimatePresence>
-        {mobile && (
-          <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 -z-10 flex flex-col bg-sidebar px-5 pb-8 pt-24 lg:hidden">
-            <ul className="flex flex-1 flex-col">
-              {[...nav, { label: "Changelog", href: "/changelog" }, { label: "About", href: "/about" }].map((n, i) => (
-                <motion.li key={n.href} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.05 }}>
-                  <Link href={n.href} className="flex items-baseline justify-between border-b border-border py-4 text-[30px] font-semibold tracking-[-0.04em]">
-                    {n.label}<span className="font-mono text-[11px] font-normal text-muted">0{i + 1}</span>
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-            <div className="grid grid-cols-2 gap-2">
-              <Link href="https://puku.sh/login" className="btn btn-secondary">Sign in</Link>
-              <Link href="/pricing" className="btn btn-primary">Get started</Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 }

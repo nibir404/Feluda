@@ -21,14 +21,13 @@ export const wrap = "mx-auto w-full max-w-[1440px] px-5 md:px-12 xl:px-24";
 export const eyebrowCls = "font-mono text-[12px] leading-4 tracking-[0.1em]";
 export const h2Cls = "text-[clamp(36px,4.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em]";
 
-export function SecHead({ eyebrow, title, side, tone = "accent", titleW = 640, sideW = 380, children }: { eyebrow: string; title: string; side?: string; tone?: "accent" | "danger"; titleW?: number; sideW?: number; children?: React.ReactNode }) {
+export function SecHead({ eyebrow, title, tone = "accent", titleW = 640, children }: { eyebrow: string; title: string; side?: string; tone?: "accent" | "danger"; titleW?: number; sideW?: number; children?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
       <div className="flex flex-col gap-4">
         <p className={`${eyebrowCls} ${tone === "danger" ? "text-danger" : "text-accent"}`}>{eyebrow}</p>
         <h2 className={h2Cls} style={{ maxWidth: titleW }}>{title}</h2>
       </div>
-      {side && <p className="shrink-0 text-[17px] leading-[26px] text-muted" style={{ maxWidth: sideW }}>{side}</p>}
       {children}
     </div>
   );
